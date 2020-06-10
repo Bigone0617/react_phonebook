@@ -5,10 +5,21 @@ class login extends Component {
     state = {
         id : "",
         pw: "",
-        isSignUp: false
+        isSignUp: false,
+        text: "",
+        idInformation : JSON.parse(localStorage.getItem('information'))
     }
 
-    idInformation = JSON.parse(localStorage.getItem('information'))
+    
+
+    componentDidMount = () => {
+        if(this.state.idInformation === null){
+            this.setState({
+                isSignUp: true,
+                text: " 회원가입을 먼저 해주세요!"
+            })
+        }
+    }
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -27,14 +38,15 @@ class login extends Component {
 
     toggleSignUp = () => {
         this.setState({
-            isSignUp : !this.state.isSignUp
+            isSignUp : !this.state.isSignUp,
+            idInformation : JSON.parse(localStorage.getItem('information'))
         });
     }
 
     loginCheck = () => {
         let chk = false;
 
-        this.idInformation.forEach(function(item){
+        this.state.idInformation.forEach(function(item){
             if(item.id === this.state.id && item.pw === this.state.pw){
                 chk = true
             }else{
@@ -53,12 +65,12 @@ class login extends Component {
     }
 
     render() {
-        const {id, pw, isSignUp} = this.state;
+        const {id, pw, isSignUp, text} = this.state;
         return (
             <Fragment>
                 {
                     isSignUp ? (
-                        <SignUp toggleSignUp={this.toggleSignUp}/>
+                        <SignUp toggleSignUp={this.toggleSignUp} text={text}/>
                     ) : (
                         <form onSubmit={this.handleSubmit}>
                             <input 

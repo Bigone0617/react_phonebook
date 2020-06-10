@@ -1,16 +1,25 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 class signup extends Component {
     state = {
         id : "",
         pw : "",
-        pwchk: ""
+        pwchk: "",
+        idChk : false
     }
 
     mapping = {
         id : "아이디",
         pw : "비밀번호",
         pwchk : "비밀번호 확인"
+    }
+
+    componentDidMount = () => {
+        if(this.props.text.length > 0){
+            this.setState({
+                idChk: true
+            })
+        }
     }
 
     //input박스 값 바뀔때 마다 state 변경
@@ -64,7 +73,28 @@ class signup extends Component {
     //중복체크 
     checkOverlap = () => {
         const idList = JSON.parse(localStorage.getItem('information'))
-        console.log(idList);
+        const {id} = this.state;
+        let chk = true;
+        if(id.trim() === "" ){
+            alert("아이디를 입력해주세요");
+            return false
+        }else{
+            idList.forEach(function(item){
+                if(item["id"] === {id}){
+                    chk = false;
+                }
+            }.bind(this))
+                debugger;
+            if(chk){
+                alert("사용 가능한 아이디입니다")
+                this.setState({
+                    idChk: true
+                })
+            }else{
+                alert("중복된 아이디가 있습니다!")
+                this.resetState()
+            }
+        }
     }
 
     //아이디 정보 localstorage에 저장
@@ -95,9 +125,11 @@ class signup extends Component {
     }
  
     render() {
-        const {id, pw, pwchk} = this.state;
+        const {id, pw, pwchk, idChk} = this.state;
+        const {text} = this.props;
         return (
             <div>
+                <h1>{text}</h1>
                 <form onSubmit={this.handleSubmit}>
                     <div>
                         <input 
@@ -106,7 +138,7 @@ class signup extends Component {
                             value={id}
                             onChange={this.handleLoginInformation}
                         />
-                        <button onClick={this.checkOverlap}>아이디 중복체크</button>
+                        
                     </div>
                     <div>
                         <input 
@@ -125,9 +157,24 @@ class signup extends Component {
                         />
                     </div>
                     <div>
-                        <button type="submit">회원가입</button>
+                        {
+                            idChk ? (
+                                <button type="submit">회원가입</button>
+                            ) : (
+                                <Fragment></Fragment>
+                            )
+                        }
                     </div>
                 </form>
+                <Fragment>
+                    {
+                        text.length > 0 ? (
+                            <Fragment></Fragment>
+                        ) : (
+                            <button onClick={this.checkOverlap}>아이디 중복체크</button>
+                        )
+                    }
+                </Fragment>
             </div>
         );
     }

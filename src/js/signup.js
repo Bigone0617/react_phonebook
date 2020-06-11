@@ -5,7 +5,8 @@ class signup extends Component {
         id: "",
         pw: "",
         pwchk: "",
-        idChk: false
+        idChk: false,
+        samePw: false
     }
 
     mapping = {
@@ -27,11 +28,22 @@ class signup extends Component {
         this.setState({
             [e.target.name]: e.target.value
         })
+        if(e.target.name === "pwchk"){
+            if(e.target.value === this.state.pw){
+                this.setState({
+                    samePw: true
+                })
+            }else{
+                this.setState({
+                    samePw: false
+                })
+            }
+        }
     }
 
     //회원가입
     handleSubmit = (e) => {
-        const { id, pw, pwchk } = this.state;
+        const { id, pw, pwchk, samePw } = this.state;
         e.preventDefault();
         console.log("=========================");
         console.log("id : " + id)
@@ -39,15 +51,10 @@ class signup extends Component {
         console.log("pwchk : " + pwchk)
         console.log("=========================");
 
-        if (this.checkEmpty()) {
-            if (pw !== pwchk) {
-                alert("비밀번호와 비밀번호 확인이 다릅니다!")
-                this.resetState()
-            } else {
-                this.saveInformantion()
-                this.resetState()
-                this.props.toggleSignUp()
-            }
+        if (this.checkEmpty() && samePw) {
+            this.saveInformantion()
+            this.resetState()
+            this.props.toggleSignUp()
         }
     }
 
@@ -113,9 +120,7 @@ class signup extends Component {
         InformationArry.push(information)
 
         localStorage.setItem('information', JSON.stringify(InformationArry));
-        this.setState({
-
-        })
+        
         console.log(localStorage.getItem('information'))
     }
 
@@ -129,7 +134,7 @@ class signup extends Component {
     }
 
     render() {
-        const { id, pw, pwchk, idChk } = this.state;
+        const { id, pw, pwchk, idChk,samePw } = this.state;
         const { text } = this.props;
         return (
             <div>
@@ -159,6 +164,9 @@ class signup extends Component {
                             value={pwchk}
                             onChange={this.handleLoginInformation}
                         />
+                        {
+                            samePw ? '⭕' : '❌'
+                        }
                     </div>
                     <div>
                         {

@@ -7,26 +7,7 @@ class App extends Component {
   id = 3;
 
   state = {
-    information: [
-      {
-        id: 0,
-        name: '홍길동',
-        phone: '010-0000-0001',
-        address: "서울특별시 강남구"
-      },
-      {
-        id: 1,
-        name: '김길동',
-        phone: '010-0000-0002',
-        address: "서울특별시 강북구"
-      },
-      {
-        id: 2,
-        name: '박길동',
-        phone: '010-0000-0003',
-        address: "서울특별시 노원구"
-      }
-    ],
+    information: JSON.parse(localStorage.getItem('phonebookInfo')),
     keyword: '',
     login: false,
     id: ''
@@ -89,13 +70,13 @@ class App extends Component {
   }
 
   render() {
-    const {login} = this.state
+    const {login, id} = this.state
     return (
       <div>
         {
           login ? (
             <Fragment>
-              <PhoneForm onCreate={this.handleCreate}/>
+              <PhoneForm onCreate={this.handleCreate} id={id}/>
               <div>
                 <input 
                   value={this.state.keyword}

@@ -28,7 +28,8 @@ class App extends Component {
       }
     ],
     keyword: '',
-    login: false
+    login: false,
+    id: ''
   }
 
 
@@ -75,10 +76,16 @@ class App extends Component {
   }
 
   handleLogin = () => {
-    console.log("핸들 로그인!")
     this.setState({
       login: !this.state.login
     })
+  }
+
+  setIdInfo = (id) => {
+    this.setState({
+      id : id
+    });
+    alert(id+"님 안녕하세요!")
   }
 
   render() {
@@ -106,7 +113,7 @@ class App extends Component {
               />
             </Fragment>
           ) : (
-            <Login submitLogin={this.handleLogin}/>
+            <Login submitLogin={this.handleLogin} setId={this.setIdInfo}/>
           )
         }
       </div>

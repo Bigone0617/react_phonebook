@@ -30,6 +30,7 @@ class phoneForm extends Component {
             }
         }
         this.props.onCreate(this.state)
+
         this.setState({
             name: '',
             phone: '',

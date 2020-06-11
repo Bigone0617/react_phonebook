@@ -7,7 +7,7 @@ class login extends Component {
         pw: "",
         isSignUp: false,
         text: "",
-        idInformation : JSON.parse(localStorage.getItem('information'))
+        idInformation : JSON.parse(localStorage.getItem('information')) 
     }
 
     
@@ -23,8 +23,10 @@ class login extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
+        debugger;
         if(this.loginCheck()){
             this.props.submitLogin()
+            this.props.setId(this.state.id)
         }else{
             alert("일치하는 정보가 없습니다!");
         }
@@ -81,6 +83,7 @@ class login extends Component {
                             />
                             <input 
                                 name="pw"
+                                type="password"
                                 placeholder="비밀번호"
                                 value={pw}
                                 onChange={this.handleLoginInformation}
